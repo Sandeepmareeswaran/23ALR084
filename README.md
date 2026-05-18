@@ -16,6 +16,21 @@
 
   > cors
 
+## Backend End Points 
+> GET /
+
+> GET /api/notification/test
+
+> POST /api/notification/send
+
+> GET /api/notification/unread
+
+> PATCH /api/notification/:id/read
+
+> GET /api/notification/recent
+
+> GET /api/notification/analytics 
+
 ## FileSystems 
 ### Backend
 
