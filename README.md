@@ -3,6 +3,16 @@
 
 <img width="698" height="631" alt="Untitled Diagram drawio" src="https://github.com/user-attachments/assets/6fefe313-ff5c-46ee-9eef-931f790542f9" />
 
+## Install
+
+### backend
+     cd notification_app_be
+       npm install
+       node App.js
+### frontend
+    cd notification_app_fe
+      npm install
+      npm run dev
 
 # FullStack Development 
 
