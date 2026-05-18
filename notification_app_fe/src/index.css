@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@layer components{
+  .main-container{
+    @apply bg-black min-h-screen flex flex-col items-center px-10 py-12 gap-10
+  }
+  .heading{
+    @apply text-4xl text-purple-700
+  }
+  .card{
+    @apply w-full max-w-2xl rounded-2xl border border-zinc-800 shadow-2xl p-10 bg-zinc-900 flex flex-col gap-5
+  }
+  .input-card{
+    @apply max-w-full rounded-2xl gap-2 bg-zinc-950 border border-bs-zinc-700 focus:ring-2 focus:ring-blue-500 p-3 text-white
+  }
+  .hero-heading {
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3;
+  }
+
+  .hero-heading-gradient {
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(to bottom, #a779f1ff, #5A3A92);
+    -webkit-background-clip: text;
+  }
+
+  .hero-subheading {
+    @apply text-xl sm:text-2xl md:text-3xl font-semibold;
+  }
+
+  .hero-subheading-gradient {
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(to bottom, #ff8e38ff, #9b4b05ff);
+    -webkit-background-clip: text;
+  }
+
+  .btn-primary{
+    @apply bg-gradient-to-r from-purple-500 to-violet-700 p-2 w-full max-w-2xl rounded-xl text-black text-2xl font-bold bg-purple-600
+  }
+  .lstcontent{
+    @apply bg-zinc-950 border border-zinc-700 rounded-2xl text-white p-5 w-full max-w-2xl shadow-sm shadow-purple-500
+  }
+
+}
