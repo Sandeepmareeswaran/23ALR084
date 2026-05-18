@@ -1,6 +1,11 @@
 # 23ALR084
+# Architecture Diagram
+
+<img width="698" height="631" alt="Untitled Diagram drawio" src="https://github.com/user-attachments/assets/6fefe313-ff5c-46ee-9eef-931f790542f9" />
+
 
 # FullStack Development 
+
 ## TeckStack that used here is
   ### Frontend
   > React+vite
@@ -63,6 +68,22 @@
 
 <img width="1899" height="978" alt="image" src="https://github.com/user-attachments/assets/954f978b-40dc-4928-8595-4f12fac967db" />
 
+### BACKEND END POINTS
+
+<img width="1556" height="710" alt="image" src="https://github.com/user-attachments/assets/18b21c2d-b57b-42fc-8d1e-75901de56c84" />
+
+<img width="1555" height="740" alt="image" src="https://github.com/user-attachments/assets/f1730b48-6a03-4764-b3a3-267eb28a15ef" />
+
+<img width="1547" height="710" alt="image" src="https://github.com/user-attachments/assets/bbaa1ef6-f143-47f2-a505-5cdcbb36930f" />
+
+and more 
+
+
+# Important in Design 
+
+ ## i have code all my designed in the app.css with help of tailwind css and i have reuced all accross the file system and to the addition i have made the code it one and use it many times in file 
 
 
 
+
+# Thank you
