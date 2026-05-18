@@ -34,7 +34,19 @@
 ## FileSystems 
 ### Backend
 
-      cd notification_app_be
+      cd notification_app_be/
+      
+        Router/
+
+          NotificationRouter.js
+          
+        Service/
+
+          NotificationSystem.js
+        
+        App.js
+          
+        
 
 ### Frontend
 
