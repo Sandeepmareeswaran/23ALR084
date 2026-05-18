@@ -2,16 +2,16 @@ const express = require('express');
 const NotificationSystem = require('../Service/NotificationSystem');
 const router = express.Router();
 
-router.get("/test", (req, res)=>res.json({ message: "Notification system is working!" }));
+router.get("/test", (req, res) => res.json({ data: { ok: true, msg: "notification router ok" } }));
 
 router.post("/send", async (req, res)=>{
   try {
     const response = await NotificationSystem.send(req.body);
 
-    res.status(201).json(response);
+    res.status(201).json({ data: response });
 
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({ error: error.message || String(error) });
   }
 });
 
@@ -21,7 +21,7 @@ router.get("/unread", async(req, res)=>{
 
     const data = await NotificationSystem.getUnread(userId);
 
-    res.json(data);
+    res.json({ data });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -30,7 +30,7 @@ router.get("/unread", async(req, res)=>{
 router.patch("/:id/read", async(req, res)=>{
   try{
     const data = await NotificationSystem.markRead(req.params.id);
-    res.json(data);
+    res.json({ data });
 
 
   }catch (err) {
@@ -44,7 +44,7 @@ router.get("/recent", async(req,res)=>{
     const limit = Number(req.query.limit || 20);
 
     const data = await NotificationSystem.getRecent(limit);
-    res.json(data);
+    res.json({ data });
 
   }catch(error) {
     res.status(400).json({ error: error.message });
@@ -57,10 +57,10 @@ router.get("/analytics", async(req,res)=>{
 
     const data = await NotificationSystem.getAnalytics(type);
 
-    res.json(data);
+    res.json({ data });
 
-  }catch {
-    res.status(400).json("Invalid request");
+  } catch (err) {
+    res.status(400).json({ error: err.message || String(err) });
   }
 });
 

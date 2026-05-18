@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => res.send('Notification backend (simple)'));
-app.use("/api/notification", router);
+app.use("/api/notifications", router);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

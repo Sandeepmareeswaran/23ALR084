@@ -94,47 +94,47 @@ function App() {
   }, []);
 
   return (
-    <div className="container">
-      <h1 className="page-title">Notification App</h1>
+    <div className="main-container text-white">
+      <h1 className="hero-heading hero-heading-gradient">Notification App</h1>
 
-      <form className="card" onSubmit={onSend}>
-        <h2>Send Notification</h2>
+      <form className="card border-4 border-zinc-700" onSubmit={onSend}>
+        <h2 className="hero-subheading hero-subheading-gradient">Send Notification</h2>
 
         <label>User ID</label>
-        <input value={userId} onChange={(e) => setUserId(e.target.value)} required />
+        <input className="input-card" value={userId} onChange={(e) => setUserId(e.target.value)} required />
 
         <label>Type</label>
-        <select value={type} onChange={(e) => setType(e.target.value)}>
+        <select className="input-card" value={type} onChange={(e) => setType(e.target.value)}>
           <option value="Email">Email</option>
           <option value="SMS">SMS</option>
           <option value="Push">Push</option>
         </select>
 
         <label>Title</label>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <input className="input-card" value={title} onChange={(e) => setTitle(e.target.value)} required />
 
         <label>Message</label>
-        <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
+        <textarea className="input-card" value={message} onChange={(e) => setMessage(e.target.value)} required />
 
-        <button type="submit" disabled={isLoading}>
+        <button type="submit" disabled={isLoading} className="btn-primary">
           {isLoading ? 'Please wait...' : 'Send'}
         </button>
       </form>
 
       <div className="card">
-        <h2>Filters</h2>
+        <h2 className="hero-subheading hero-subheading-gradient">Filters</h2>
         <label>Query User ID</label>
-        <input value={queryUserId} onChange={(e) => setQueryUserId(e.target.value)} />
+        <input className="input-card" value={queryUserId} onChange={(e) => setQueryUserId(e.target.value)} />
 
         <label>Analytics Type</label>
-        <select value={analyticsType} onChange={(e) => setAnalyticsType(e.target.value)}>
+        <select className="input-card" value={analyticsType} onChange={(e) => setAnalyticsType(e.target.value)}>
           <option value="">All</option>
           <option value="Email">Email</option>
           <option value="SMS">SMS</option>
           <option value="Push">Push</option>
         </select>
 
-        <button type="button" onClick={() => loadData(queryUserId, analyticsType)}>
+        <button type="button" onClick={() => loadData(queryUserId, analyticsType)} className="btn-primary">
           Reload
         </button>
       </div>
@@ -142,20 +142,22 @@ function App() {
       {errorText ? <p className="error">{errorText}</p> : null}
 
       <div className="card">
-        <h2>Unread Notifications ({unreadList.length})</h2>
+        <h2 className="hero-subheading hero-subheading-gradient">Unread Notifications ({unreadList.length})</h2>
         {unreadList.length === 0 ? <p>No unread notifications</p> : null}
         {unreadList.map((item) => (
           <div key={item.id} className="item">
             <p><b>{item.title}</b></p>
             <p>{item.message}</p>
             <p>{item.type} | {item.userId}</p>
-            <button type="button" onClick={() => onMarkRead(item.id)}>Mark Read</button>
+            <button type="button" onClick={() => onMarkRead(item.id)} className="btn-primary">
+              Mark Read
+            </button>
           </div>
         ))}
       </div>
 
       <div className="card">
-        <h2>Recent Notifications</h2>
+        <h2 className="hero-subheading hero-subheading-gradient">Recent Notifications</h2>
         {recentList.length === 0 ? <p>No records</p> : null}
         {recentList.map((item) => (
           <div key={item.id} className="item">
@@ -167,7 +169,7 @@ function App() {
       </div>
 
       <div className="card">
-        <h2>Analytics</h2>
+        <h2 className="hero-subheading hero-subheading-gradient">Analytics</h2>
         {analyticsList.length === 0 ? <p>No records</p> : null}
         {analyticsList.map((row) => (
           <div key={row.type} className="item">
@@ -183,3 +185,5 @@ function App() {
 }
 
 export default App;
+
+

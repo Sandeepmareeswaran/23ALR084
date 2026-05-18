@@ -10,7 +10,7 @@
     @apply w-full max-w-2xl rounded-2xl border border-zinc-800 shadow-2xl p-10 bg-zinc-900 flex flex-col gap-5
   }
   .input-card{
-    @apply max-w-full rounded-2xl gap-2 bg-zinc-950 border border-bs-zinc-700 focus:ring-2 focus:ring-blue-500 p-3 text-white
+    @apply max-w-full rounded-2xl gap-2 bg-zinc-950 border-1 border-purple-700 focus:ring-2 focus:ring-blue-500 p-3 text-white 
   }
   .hero-heading {
     @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3;
