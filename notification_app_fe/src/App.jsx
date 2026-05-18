@@ -1,122 +1,185 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
+import api from './services/api';
+import { logFrontendEvent } from './services/logger';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [userId, setUserId] = useState('u1001');
+  const [type, setType] = useState('Email');
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [queryUserId, setQueryUserId] = useState('u1001');
+  const [analyticsType, setAnalyticsType] = useState('');
+  const [recentList, setRecentList] = useState([]);
+  const [unreadList, setUnreadList] = useState([]);
+  const [analyticsList, setAnalyticsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorText, setErrorText] = useState('');
+
+  async function loadData(currentUserId, currentAnalyticsType) {
+    setIsLoading(true);
+    setErrorText('');
+
+    try {
+      const recentResponse = await api.get('/notifications/recent?limit=10');
+      const unreadResponse = await api.get(`/notifications/unread?userId=${encodeURIComponent(currentUserId)}`);
+
+      let analyticsUrl = '/notifications/analytics';
+      if (currentAnalyticsType) {
+        analyticsUrl += `?type=${encodeURIComponent(currentAnalyticsType)}`;
+      }
+      const analyticsResponse = await api.get(analyticsUrl);
+
+      setRecentList(recentResponse.data.data || []);
+      setUnreadList(unreadResponse.data.data || []);
+      setAnalyticsList(analyticsResponse.data.data || []);
+
+      await logFrontendEvent({
+        level: 'info',
+        packageName: 'page',
+        message: 'Dashboard loaded',
+      });
+    } catch (error) {
+      const text = error?.response?.data?.error || error.message || 'Cannot load data';
+      setErrorText(text);
+    }
+
+    setIsLoading(false);
+  }
+
+  async function onSend(event) {
+    event.preventDefault();
+
+    setIsLoading(true);
+    setErrorText('');
+
+    try {
+      await api.post('/notifications/send', {
+        userId,
+        type,
+        title,
+        message,
+      });
+
+      setTitle('');
+      setMessage('');
+
+      await logFrontendEvent({
+        level: 'info',
+        packageName: 'component',
+        message: 'Notification created from UI',
+      });
+
+      await loadData(queryUserId, analyticsType);
+    } catch (error) {
+      const text = error?.response?.data?.error || error.message || 'Cannot send notification';
+      setErrorText(text);
+    }
+
+    setIsLoading(false);
+  }
+
+  async function onMarkRead(id) {
+    try {
+      await api.patch(`/notifications/${id}/read`);
+      await loadData(queryUserId, analyticsType);
+    } catch (error) {
+      const text = error?.response?.data?.error || error.message || 'Cannot mark as read';
+      setErrorText(text);
+    }
+  }
+
+  useEffect(() => {
+    loadData(queryUserId, analyticsType);
+  }, []);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+    <div className="container">
+      <h1 className="page-title">Notification App</h1>
+
+      <form className="card" onSubmit={onSend}>
+        <h2>Send Notification</h2>
+
+        <label>User ID</label>
+        <input value={userId} onChange={(e) => setUserId(e.target.value)} required />
+
+        <label>Type</label>
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="Email">Email</option>
+          <option value="SMS">SMS</option>
+          <option value="Push">Push</option>
+        </select>
+
+        <label>Title</label>
+        <input value={title} onChange={(e) => setTitle(e.target.value)} required />
+
+        <label>Message</label>
+        <textarea value={message} onChange={(e) => setMessage(e.target.value)} required />
+
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Please wait...' : 'Send'}
         </button>
-      </section>
+      </form>
 
-      <div className="ticks"></div>
+      <div className="card">
+        <h2>Filters</h2>
+        <label>Query User ID</label>
+        <input value={queryUserId} onChange={(e) => setQueryUserId(e.target.value)} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <label>Analytics Type</label>
+        <select value={analyticsType} onChange={(e) => setAnalyticsType(e.target.value)}>
+          <option value="">All</option>
+          <option value="Email">Email</option>
+          <option value="SMS">SMS</option>
+          <option value="Push">Push</option>
+        </select>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <button type="button" onClick={() => loadData(queryUserId, analyticsType)}>
+          Reload
+        </button>
+      </div>
+
+      {errorText ? <p className="error">{errorText}</p> : null}
+
+      <div className="card">
+        <h2>Unread Notifications ({unreadList.length})</h2>
+        {unreadList.length === 0 ? <p>No unread notifications</p> : null}
+        {unreadList.map((item) => (
+          <div key={item.id} className="item">
+            <p><b>{item.title}</b></p>
+            <p>{item.message}</p>
+            <p>{item.type} | {item.userId}</p>
+            <button type="button" onClick={() => onMarkRead(item.id)}>Mark Read</button>
+          </div>
+        ))}
+      </div>
+
+      <div className="card">
+        <h2>Recent Notifications</h2>
+        {recentList.length === 0 ? <p>No records</p> : null}
+        {recentList.map((item) => (
+          <div key={item.id} className="item">
+            <p><b>{item.title}</b></p>
+            <p>{item.message}</p>
+            <p>{item.type} | {new Date(item.createdAt).toLocaleString()}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="card">
+        <h2>Analytics</h2>
+        {analyticsList.length === 0 ? <p>No records</p> : null}
+        {analyticsList.map((row) => (
+          <div key={row.type} className="item">
+            <p><b>{row.type}</b></p>
+            <p>Total: {row.total}</p>
+            <p>Unread: {row.unread}</p>
+            <p>Latest: {row.latest ? new Date(row.latest).toLocaleString() : '-'}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;

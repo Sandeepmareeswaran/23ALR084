@@ -1,15 +1,20 @@
 # Node modules
 node_modules/
+notification_app_be/node_modules/
+notification_app_fe/node_modules/
 
 # Environment files
 .env
 .env.local
 .env.development
 .env.production
+notification_app_be/.env
+notification_app_fe/.env
 
 # Build folders
 dist/
 build/
+notification_app_fe/dist/
 
 # Logs
 logs
@@ -33,8 +38,3 @@ coverage/
 # Temporary files
 tmp/
 temp/
-
-
-
-i have provided you the complete statement what of the project that i ave to do for the round 1, could u please read all the cocument clearly and deeply, i took fullstack development and i need you to provide what to do and how to do so could u please helo me ?
-
